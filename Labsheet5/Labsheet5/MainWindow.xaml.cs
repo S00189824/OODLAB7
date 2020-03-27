@@ -28,5 +28,34 @@ namespace Labsheet5
         {
             InitializeComponent();
         }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            var query = from b in db.Bands
+                        select b;
+
+            lbxBands.ItemsSource = query.ToList();
+        }
+
+        private void LbxBands_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Band selectedband = lbxBands.SelectedItem as Band;
+
+            if(selectedband != null)
+            {
+                //Display Band Info
+                string bandtext = $"{selectedband.YearFormed}\nMembers: {selectedband.Members}";
+                tblkBandinfo.Text = bandtext;
+
+
+                //display Band Image
+                imgBand.Source = new BitmapImage(new Uri($"/Images/{selectedband.BandImage}",UriKind.Relative));
+                //Display albums
+
+
+                lbxAlbums.ItemsSource = selectedband.Albums;
+            }
+
+        }
     }
 }
